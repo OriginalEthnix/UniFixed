@@ -19,7 +19,7 @@ function ResultsContent() {
     const fetchColleges = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/predict?rank=${userRank}`
+          `https://unifixed.onrender.com/predict?rank=${userRank}`
         );
 
         const data = await response.json();

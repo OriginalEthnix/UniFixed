@@ -21,34 +21,59 @@ export default function RankForm() {
   };
 
   return (
-    <div className="bg-zinc-900 p-6 rounded-2xl w-full max-w-md shadow-xl">
-      
-      <input
-        type="number"
-        placeholder="Enter your rank"
-        value={rank}
-        onChange={(e) => setRank(e.target.value)}
-        className="w-full p-3 rounded-xl bg-zinc-800 border border-zinc-700 mb-4 outline-none"
-      />
-
-      <select
-        value={exam}
-        onChange={(e) => setExam(e.target.value)}
-        className="w-full p-3 rounded-xl bg-zinc-800 border border-zinc-700 mb-4 outline-none"
+    <section
+      id="predict"
+      style={{
+        width: "100%",
+        maxWidth: "480px",
+        margin: "0 auto",
+      }}
+    >
+      <h2
+        className="gradient-text"
+        style={{
+          fontSize: "1.8rem",
+          fontWeight: 700,
+          textAlign: "center",
+          marginBottom: "1.5rem",
+        }}
       >
-        <option>JEE Main</option>
-        <option>JEE Advanced</option>
-        <option>NEET</option>
-        <option>VITEEE</option>
-      </select>
+        Enter Your Rank
+      </h2>
 
-      <button
-        onClick={handlePredict}
-        className="w-full bg-white text-black py-3 rounded-xl font-semibold hover:opacity-90 transition"
+      <div
+        className="glass-card"
+        style={{ padding: "2rem" }}
       >
-        Predict Colleges
-      </button>
+        <input
+          type="number"
+          placeholder="Enter your rank"
+          value={rank}
+          onChange={(e) => setRank(e.target.value)}
+          className="input-glass"
+          style={{ marginBottom: "1rem" }}
+        />
 
-    </div>
+        <select
+          value={exam}
+          onChange={(e) => setExam(e.target.value)}
+          className="input-glass"
+          style={{ marginBottom: "1.5rem" }}
+        >
+          <option>JEE Main</option>
+          <option>JEE Advanced</option>
+          <option>NEET</option>
+          <option>VITEEE</option>
+        </select>
+
+        <button
+          onClick={handlePredict}
+          className="btn-neon"
+          style={{ width: "100%" }}
+        >
+          Predict Colleges
+        </button>
+      </div>
+    </section>
   );
 }

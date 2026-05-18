@@ -1,8 +1,6 @@
-const { PrismaClient } = require("@prisma/client");
 const express = require("express");
 const cors = require("cors");
-
-const prisma = new PrismaClient();
+const localColleges = require("./data/colleges");
 
 const app = express();
 
@@ -13,11 +11,9 @@ app.get("/", (req, res) => {
   res.send("UniFixed API Running 🚀");
 });
 
-app.get("/colleges", async (req, res) => {
+app.get("/colleges", (req, res) => {
   try {
-    const colleges = await prisma.college.findMany();
-
-    res.json(colleges);
+    res.json(localColleges);
   } catch (error) {
     console.error("FULL ERROR:", error);
 
@@ -27,13 +23,13 @@ app.get("/colleges", async (req, res) => {
   }
 });
 
-app.get("/predict", async (req, res) => {
+app.get("/predict", (req, res) => {
   try {
     const rank = Number(req.query.rank);
 
-    const colleges = await prisma.college.findMany();
+    const colleges = localColleges;
 
-    const results = colleges.map((college) => {
+    const results = colleges.map((college, index) => {
       let category = "Dream";
 
       if (rank <= college.closingRank * 0.7) {
@@ -43,7 +39,7 @@ app.get("/predict", async (req, res) => {
       }
 
       return {
-        id: college.id,
+        id: index + 1,
         name: college.name,
         branch: college.branch,
         closingRank: college.closingRank,

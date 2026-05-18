@@ -1,0 +1,56 @@
+const { PrismaClient } = require("@prisma/client");
+
+const prisma = new PrismaClient();
+
+async function main() {
+  await prisma.college.createMany({
+    data: [
+      {
+        name: "NIT Trichy",
+        branch: "Computer Science",
+        closingRank: 5000,
+        nirf: 9,
+        package: "27 LPA",
+        hostel: "Excellent",
+        campus: "Amazing",
+        codingCulture: "Strong",
+        fees: "8 Lakhs",
+        placementScore: 9,
+      },
+      {
+        name: "DTU",
+        branch: "Software Engineering",
+        closingRank: 12000,
+        nirf: 29,
+        package: "22 LPA",
+        hostel: "Good",
+        campus: "Excellent",
+        codingCulture: "Very Strong",
+        fees: "9 Lakhs",
+        placementScore: 9,
+      },
+      {
+        name: "NSUT",
+        branch: "CSE",
+        closingRank: 15000,
+        nirf: 35,
+        package: "20 LPA",
+        hostel: "Good",
+        campus: "Great",
+        codingCulture: "Strong",
+        fees: "8.5 Lakhs",
+        placementScore: 8,
+      },
+    ],
+  });
+
+  console.log("Database seeded 🚀");
+}
+
+main()
+  .catch((e) => {
+    console.error(e);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });

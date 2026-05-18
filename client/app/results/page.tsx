@@ -12,12 +12,15 @@ function ResultsContent() {
   const [search, setSearch] = useState("");
   const [sortBy, setSortBy] = useState("nirf");
   const [colleges, setColleges] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   const router = useRouter();
 
   useEffect(() => {
     const fetchColleges = async () => {
       try {
+        setLoading(true);
         const response = await fetch(
           `https://unifixed.onrender.com/predict?rank=${userRank}`
         );
@@ -31,12 +34,85 @@ function ResultsContent() {
           setColleges([]);
         }
       } catch (error) {
-        console.error("Error fetching colleges:", error);
-      }
+    console.error("Error fetching colleges:", error);
+
+    setError(
+      "Server is waking up or unavailable. Please try again in a few seconds."
+      );
+    }
+      finally {
+    setLoading(false);
+  }
     };
 
     fetchColleges();
   }, []);
+  if (loading) {
+  return (
+    <main className="min-h-screen bg-black text-white flex items-center justify-center">
+      <div className="text-center">
+        <div className="w-12 h-12 border-4 border-white/20 border-t-white rounded-full animate-spin mx-auto mb-4"></div>
+
+        <p className="text-zinc-400 text-lg">
+          Predicting your colleges...
+        </p>
+      </div>
+    </main>
+  );
+}
+
+if (error) {
+  return (
+    <main className="min-h-screen bg-black text-white flex items-center justify-center px-6">
+      <div
+        className="glass-card"
+        style={{
+          padding: "2rem",
+          maxWidth: "500px",
+          textAlign: "center",
+        }}
+      >
+        <h2
+          style={{
+            fontSize: "1.8rem",
+            fontWeight: 700,
+            marginBottom: "1rem",
+            color: "#ff6b6b",
+          }}
+        >
+          Oops!
+        </h2>
+
+        <p
+          style={{
+            color: "var(--text-muted)",
+            lineHeight: 1.7,
+          }}
+        >
+          {error}
+        </p>
+      </div>
+    </main>
+  );
+}
+
+const filteredColleges = [...colleges]
+  .filter((college) =>
+    college.name
+      .toLowerCase()
+      .includes(search.toLowerCase())
+  )
+  .sort((a, b) => {
+    if (sortBy === "nirf") {
+      return a.nirf - b.nirf;
+    }
+
+    return (
+      parseInt(b.package) -
+      parseInt(a.package)
+    );
+  });
+
 
   return (
     <div
@@ -107,23 +183,45 @@ function ResultsContent() {
         </select>
       </div>
 
-      {/* College Cards */}
-      <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
-        {[...colleges]
-          .filter((college) =>
-            college.name.toLowerCase().includes(search.toLowerCase())
-          )
-          .sort((a, b) => {
-            if (sortBy === "nirf") {
-              return a.nirf - b.nirf;
-            }
+      {filteredColleges.length === 0 && (
+  <div
+    style={{
+      textAlign: "center",
+      padding: "5rem 0",
+    }}
+  >
+    <h2
+      style={{
+        fontSize: "2rem",
+        fontWeight: 700,
+        marginBottom: "0.75rem",
+        color: "var(--text-primary)",
+      }}
+    >
+      No matching colleges found
+    </h2>
 
-            return (
-              parseInt(b.package) -
-              parseInt(a.package)
-            );
-          })
-          .map((college, index) => {
+    <p
+      style={{
+        color: "var(--text-muted)",
+        fontSize: "1rem",
+      }}
+    >
+      Try searching with another college name.
+    </p>
+  </div>
+)}
+
+      {/* College Cards */}
+{filteredColleges.length > 0 && (
+  <div
+    style={{
+      display: "flex",
+      flexDirection: "column",
+      gap: "1.5rem",
+    }}
+  >
+        {filteredColleges.map((college, index) => {
             const placementClass =
               college.placementScore >= 8
                 ? "high"
@@ -300,7 +398,8 @@ function ResultsContent() {
             );
           })}
       </div>
-    </div>
+      )}
+      </div>
   );
 }
 

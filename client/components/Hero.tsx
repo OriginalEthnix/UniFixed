@@ -91,23 +91,30 @@ export default function Hero() {
           position: "relative",
         }}
       >
-        <div className="diamond-wrapper">
-          <div
-            className="diamond"
-            style={{ transform: "rotate(45deg)" }}
-          >
-            <div
-              className="diamond"
-              style={{
-                width: "60%",
-                height: "60%",
-                position: "absolute",
-                top: "20%",
-                left: "20%",
-                animation: "diamondRotate 16s linear infinite reverse",
-              }}
-            />
+        <div className="hero-graphic">
+          <div className="globe-spin">
+            {/* Globe */}
+            <div className="neon-globe">
+              <div className="globe-grid"></div>
+              <div className="globe-equator"></div>
+            </div>
+            
+            {/* Cap */}
+            <div className="grad-cap">
+              <div className="cap-board">
+                <div className="cap-tassel"></div>
+              </div>
+              <div className="cap-base"></div>
+            </div>
           </div>
+          
+          {/* Orbit dots */}
+          <div className="orbit orbit-1"><div className="dot"></div></div>
+          <div className="orbit orbit-2"><div className="dot"></div></div>
+          <div className="orbit orbit-3"><div className="dot"></div></div>
+          
+          {/* Floor glow */}
+          <div className="floor-glow"></div>
         </div>
       </div>
 

@@ -390,68 +390,256 @@ body {
 }
 
 /* ───────────────────────────────────────────────
-   3D DIAMOND / RHOMBUS
+   HERO GRAPHIC (Globe + Cap)
    ─────────────────────────────────────────────── */
-.diamond-wrapper {
+.hero-graphic {
   position: relative;
+  width: 320px;
+  height: 320px;
   display: flex;
   align-items: center;
   justify-content: center;
-  animation: diamondFloat 4s ease-in-out alternate infinite;
+  animation: graphicFloat 5s ease-in-out alternate infinite;
 }
 
-.diamond {
-  width: 320px;
-  height: 320px;
-  border: 2px solid transparent;
-  border-image: linear-gradient(135deg, var(--neon-purple), var(--neon-cyan), var(--neon-pink)) 1;
-  transform: perspective(800px) rotateX(15deg) rotateY(0deg);
-  animation: diamondRotate 12s linear infinite;
+@keyframes graphicFloat {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-12px); }
+}
+
+.globe-spin {
   position: relative;
-  box-shadow:
-    0 0 40px var(--neon-purple-glow),
-    0 0 80px rgba(34, 211, 238, 0.15),
-    inset 0 0 40px rgba(168, 85, 247, 0.1);
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  animation: globeSpin 10s linear infinite;
 }
 
-/* Inner diamond frame */
-.diamond::before {
-  content: '';
-  position: absolute;
-  inset: 24px;
-  border: 1.5px solid transparent;
-  border-image: linear-gradient(135deg, var(--neon-cyan), var(--neon-pink), var(--neon-purple)) 1;
-  box-shadow: inset 0 0 30px rgba(34, 211, 238, 0.08);
+@keyframes globeSpin {
+  from { transform: rotateY(0deg); }
+  to   { transform: rotateY(360deg); }
 }
 
-/* Glow effect behind */
-.diamond::after {
+/* ───────────────────────────────────────────────
+   NEON GLOBE
+   ─────────────────────────────────────────────── */
+.neon-globe {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #a855f7, #22d3ee 40%, #0a0a1a 80%);
+  box-shadow: 
+    0 0 30px #a855f7, 
+    0 0 80px rgba(34, 211, 238, 0.53), 
+    0 0 140px rgba(168, 85, 247, 0.27);
+  overflow: hidden;
+}
+
+/* Specular highlight */
+.neon-globe::before {
   content: '';
   position: absolute;
-  inset: -40px;
-  background: radial-gradient(
-    circle at center,
-    var(--neon-purple-glow) 0%,
-    rgba(34, 211, 238, 0.1) 40%,
-    transparent 70%
-  );
+  top: 10%;
+  left: 10%;
+  width: 20%;
+  height: 20%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(255, 255, 255, 0.6) 0%, transparent 70%);
+  filter: blur(2px);
+  z-index: 2;
+}
+
+/* Latitude/Longitude grid */
+.globe-grid {
+  position: absolute;
+  inset: -50%;
+  background: 
+    repeating-linear-gradient(90deg, transparent 0, transparent 38px, rgba(34, 211, 238, 0.25) 39px, rgba(34, 211, 238, 0.25) 40px),
+    repeating-linear-gradient(0deg, transparent 0, transparent 38px, rgba(34, 211, 238, 0.25) 39px, rgba(34, 211, 238, 0.25) 40px);
+  background-size: 40px 40px;
+  animation: gridScroll 10s linear infinite;
+  border-radius: 50%;
+}
+
+@keyframes gridScroll {
+  from { background-position: 0 0; }
+  to   { background-position: 120px 0; }
+}
+
+/* Equator ring */
+.globe-equator {
+  position: absolute;
+  top: 35%;
+  left: -5%;
+  width: 110%;
+  height: 30%;
+  border: 1px solid rgba(34, 211, 238, 0.5);
+  border-radius: 50%;
+  box-sizing: border-box;
+  z-index: 3;
+}
+
+/* ───────────────────────────────────────────────
+   GRADUATION CAP
+   ─────────────────────────────────────────────── */
+.grad-cap {
+  position: absolute;
+  top: -50px;
+  left: 50%;
+  margin-left: -80px;
+  width: 160px;
+  height: 120px;
+  z-index: 10;
+}
+
+.cap-board {
+  position: absolute;
+  top: 0;
+  left: 10px;
+  width: 140px;
+  height: 140px;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 40%, #0a0a0a 60%, #111 100%);
+  border: 1px solid rgba(168, 85, 247, 0.6);
+  transform: perspective(600px) rotateX(55deg) rotateZ(45deg);
+  box-shadow: 
+    0 4px 20px rgba(0, 0, 0, 0.8), 
+    0 0 12px rgba(168, 85, 247, 0.3);
+  z-index: 2;
+}
+
+/* Cap specular highlight */
+.cap-board::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 70%;
+  height: 70%;
+  background: radial-gradient(ellipse at top left, rgba(255, 255, 255, 0.18) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.cap-base {
+  position: absolute;
+  top: 45px;
+  left: 35px;
+  width: 90px;
+  height: 45px;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 40%, #0a0a0a 60%, #111 100%);
+  border-radius: 10px 10px 45px 45px;
+  border-bottom: 1px solid rgba(34, 211, 238, 0.4);
+  z-index: 1;
+}
+
+.cap-tassel {
+  position: absolute;
+  top: 38px;
+  right: 5px;
+  width: 2px;
+  height: 40px;
+  background: linear-gradient(to bottom, #a855f7, #fbbf24);
+  transform-origin: top center;
+  animation: tasselSwing 2s ease-in-out alternate infinite;
+  z-index: 3;
+}
+
+.cap-tassel::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: -3px;
+  width: 8px;
+  height: 8px;
+  background: #fbbf24;
+  border-radius: 50%;
+  box-shadow: 0 0 5px #fbbf24;
+}
+
+@keyframes tasselSwing {
+  0%   { transform: rotateZ(-8deg); }
+  100% { transform: rotateZ(8deg); }
+}
+
+/* ───────────────────────────────────────────────
+   ORBIT DOTS & FLOOR GLOW
+   ─────────────────────────────────────────────── */
+.orbit {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 50%;
+  border: 1px solid transparent;
+}
+
+.orbit .dot {
+  position: absolute;
+  top: -3px;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  background: #22d3ee;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #22d3ee, 0 0 15px #22d3ee;
+}
+
+.orbit-1 {
+  width: 380px;
+  height: 380px;
+  margin: -190px 0 0 -190px;
+  animation: orbitRotate 8s linear infinite;
+}
+
+.orbit-2 {
+  width: 440px;
+  height: 440px;
+  margin: -220px 0 0 -220px;
+  animation: orbitRotate 14s linear infinite reverse;
+}
+.orbit-2 .dot {
+  top: 50%;
+  left: -3px;
+}
+
+.orbit-3 {
+  width: 500px;
+  height: 500px;
+  margin: -250px 0 0 -250px;
+  animation: orbitRotate 20s linear infinite;
+}
+.orbit-3 .dot {
+  bottom: -3px;
+  top: auto;
+  left: 50%;
+}
+
+@keyframes orbitRotate {
+  from { transform: rotateZ(0deg) rotateX(75deg); }
+  to   { transform: rotateZ(360deg) rotateX(75deg); }
+}
+
+.floor-glow {
+  position: absolute;
+  bottom: -80px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 250px;
+  height: 40px;
+  background: radial-gradient(ellipse, rgba(168, 85, 247, 0.15) 0%, rgba(34, 211, 238, 0.1) 40%, transparent 70%);
+  border-radius: 50%;
+  filter: blur(10px);
   z-index: -1;
-  filter: blur(20px);
-  animation: borderGlow 3s ease-in-out infinite;
 }
 
-/* Responsive diamond */
+/* Responsive Graphic */
 @media (max-width: 768px) {
-  .diamond {
-    width: 200px;
-    height: 200px;
+  .hero-graphic {
+    transform: scale(0.65);
   }
 }
 
 @media (min-width: 1200px) {
-  .diamond {
-    width: 400px;
-    height: 400px;
+  .hero-graphic {
+    transform: scale(1.1);
   }
 }
 

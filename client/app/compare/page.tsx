@@ -18,6 +18,22 @@ interface CollegeData {
   codingCulture: string;
   placementScore: number;
   category: "Safe" | "Target" | "Dream";
+
+  insights?: {
+  pros?: string[];
+  cons?: string[];
+
+  campusVibe?: string;
+  codingCultureReview?: string;
+  placementReality?: string;
+  hostelReview?: string;
+  peerCompetitiveness?: string;
+  attendanceStrictness?: string;
+  cityLife?: string;
+  startupCulture?: string;
+  facultyQuality?: string;
+  aiRecommendation?: string;
+};
 }
 
 function CompareContent() {

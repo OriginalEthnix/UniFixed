@@ -1,13 +1,8 @@
 "use client";
 import { useMemo } from "react";
-import { CollegeData } from "./CollegeCard";
+import { CollegeData } from "../types/college";
 
 export type TabType = "All" | "Safe" | "Target" | "Dream";
-
-interface College {
-  category: string;
-  [key: string]: unknown;
-}
 
 interface PredictionTabsProps {
   activeTab: TabType;

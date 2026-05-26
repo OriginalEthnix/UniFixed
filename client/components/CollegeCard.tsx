@@ -2,45 +2,14 @@
 import { memo, useState } from "react";
 import FavoriteButton from "./FavoriteButton";
 
-export interface CollegeInsight {
-  pros: string[];
-  cons: string[];
-  campusVibe: string;
-  codingCultureReview: string;
-  placementReality: string;
-  hostelReview: string;
-  peerCompetitiveness: string;
-  attendanceStrictness: string;
-  cityLife: string;
-  startupCulture: string;
-  facultyQuality: string;
-  aiRecommendation: string;
-}
-
-export interface CollegeData {
-  id: number;
-  name: string;
-  branch: string;
-  exam: string;
-  closingRank: number;
-  nirf: number;
-  hostel: string;
-  campus: string;
-  fees: string;
-  package: string;
-  codingCulture: string;
-  placementScore: number;
-  category: "Safe" | "Target" | "Dream";
-  insights?: CollegeInsight | null;
-}
+import { useCompare } from "../hooks/useCompare";
+import { CollegeData } from "../types/college";
 
 interface CollegeCardProps {
   college: CollegeData;
   index: number;
   favorites: number[];
   onFavoriteToggle: (id: number) => void;
-  compareSelected: CollegeData[];
-  onCompareToggle: (college: CollegeData) => void;
 }
 
 const BADGE_CLASS: Record<string, string> = {
@@ -52,10 +21,12 @@ const BADGE_CLASS: Record<string, string> = {
 const PLACEMENT_CLASS = (score: number) =>
   score >= 8 ? "high" : score >= 6 ? "mid" : "low";
 
-function CollegeCard({ college, index, favorites, onFavoriteToggle, compareSelected, onCompareToggle }: CollegeCardProps) {
+function CollegeCard({ college, index, favorites, onFavoriteToggle }: CollegeCardProps) {
   const [showInsights, setShowInsights] = useState(false);
-  const isCompared  = compareSelected.some((c) => c.id === college.id);
-  const canCompare  = isCompared || compareSelected.length < 3;
+  const { compareList, toggleCollege } = useCompare();
+  
+  const isCompared  = compareList.some((c) => c.id === college.id);
+  const canCompare  = isCompared || compareList.length < 3;
   const insights = college.insights;
 
   return (
@@ -145,7 +116,7 @@ function CollegeCard({ college, index, favorites, onFavoriteToggle, compareSelec
               {/* AI Recommendation Highlight */}
               <div style={{ padding: "1rem", borderRadius: "8px", background: "rgba(168,85,247,0.1)", border: "1px solid rgba(168,85,247,0.3)", marginBottom: "1rem" }}>
                 <p style={{ color: "var(--neon-purple)", fontSize: "0.8rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "0.35rem" }}>✨ AI Recommendation</p>
-                <p style={{ color: "var(--text-primary)", fontSize: "0.95rem", lineHeight: 1.5 }}>{insights.aiRecommendation}</p>
+                <p style={{ color: "var(--text-primary)", fontSize: "0.95rem", lineHeight: 1.5 }}>{insights?.aiRecommendation}</p>
               </div>
 
               {/* Pros & Cons */}
@@ -153,13 +124,13 @@ function CollegeCard({ college, index, favorites, onFavoriteToggle, compareSelec
                 <div style={{ padding: "1rem", borderRadius: "8px", background: "rgba(16, 185, 129, 0.05)", border: "1px solid rgba(16, 185, 129, 0.15)" }}>
                   <p style={{ color: "#34d399", fontWeight: 600, fontSize: "0.9rem", marginBottom: "0.5rem" }}>Pros</p>
                   <ul style={{ margin: 0, paddingLeft: "1.2rem", fontSize: "0.85rem", color: "var(--text-body)", lineHeight: 1.6 }}>
-                    {Array.isArray(insights.pros) ? insights.pros.map((p, i) => <li key={i}>{p}</li>) : null}
+                    {Array.isArray(insights?.pros) ? insights.pros.map((p, i) => <li key={i}>{p}</li>) : null}
                   </ul>
                 </div>
                 <div style={{ padding: "1rem", borderRadius: "8px", background: "rgba(239, 68, 68, 0.05)", border: "1px solid rgba(239, 68, 68, 0.15)" }}>
                   <p style={{ color: "#f87171", fontWeight: 600, fontSize: "0.9rem", marginBottom: "0.5rem" }}>Cons</p>
                   <ul style={{ margin: 0, paddingLeft: "1.2rem", fontSize: "0.85rem", color: "var(--text-body)", lineHeight: 1.6 }}>
-                    {Array.isArray(insights.cons) ? insights.cons.map((c, i) => <li key={i}>{c}</li>) : null}
+                    {Array.isArray(insights?.cons) ? insights.cons.map((c, i) => <li key={i}>{c}</li>) : null}
                   </ul>
                 </div>
               </div>
@@ -168,19 +139,19 @@ function CollegeCard({ college, index, favorites, onFavoriteToggle, compareSelec
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
                 <div>
                   <p style={{ fontSize: "0.8rem", color: "var(--text-muted)", marginBottom: "0.25rem" }}>Campus Vibe</p>
-                  <p style={{ fontSize: "0.85rem", color: "var(--text-body)", lineHeight: 1.5 }}>{insights.campusVibe}</p>
+                  <p style={{ fontSize: "0.85rem", color: "var(--text-body)", lineHeight: 1.5 }}>{insights?.campusVibe}</p>
                 </div>
                 <div>
                   <p style={{ fontSize: "0.8rem", color: "var(--text-muted)", marginBottom: "0.25rem" }}>Placement Reality</p>
-                  <p style={{ fontSize: "0.85rem", color: "var(--text-body)", lineHeight: 1.5 }}>{insights.placementReality}</p>
+                  <p style={{ fontSize: "0.85rem", color: "var(--text-body)", lineHeight: 1.5 }}>{insights?.placementReality}</p>
                 </div>
                 <div>
                   <p style={{ fontSize: "0.8rem", color: "var(--text-muted)", marginBottom: "0.25rem" }}>Coding Culture</p>
-                  <p style={{ fontSize: "0.85rem", color: "var(--text-body)", lineHeight: 1.5 }}>{insights.codingCultureReview}</p>
+                  <p style={{ fontSize: "0.85rem", color: "var(--text-body)", lineHeight: 1.5 }}>{insights?.codingCultureReview}</p>
                 </div>
                 <div>
                   <p style={{ fontSize: "0.8rem", color: "var(--text-muted)", marginBottom: "0.25rem" }}>Peer Environment</p>
-                  <p style={{ fontSize: "0.85rem", color: "var(--text-body)", lineHeight: 1.5 }}>{insights.peerCompetitiveness}</p>
+                  <p style={{ fontSize: "0.85rem", color: "var(--text-body)", lineHeight: 1.5 }}>{insights?.peerCompetitiveness}</p>
                 </div>
               </div>
 
@@ -201,7 +172,7 @@ function CollegeCard({ college, index, favorites, onFavoriteToggle, compareSelec
             opacity: !canCompare ? 0.4 : 1,
             cursor: !canCompare ? "not-allowed" : "pointer",
           }}
-          onClick={() => canCompare && onCompareToggle(college)}
+          onClick={() => canCompare && toggleCollege(college)}
           disabled={!canCompare}
           title={!canCompare ? "Max 3 colleges for comparison" : undefined}
         >

@@ -37,7 +37,7 @@ function CompareContent() {
 
   const rows = [
     { label: "AI Recommendation", isHtml: true, keys: collegesData.map(c => 
-      c.insights ? `<div style="color:var(--neon-purple);font-weight:600;font-size:0.95rem;">✨ ${c.insights.aiRecommendation}</div>` : "-"
+      c.insights?.aiRecommendation ? `<div style="color:var(--neon-purple);font-weight:600;font-size:0.95rem;">✨ ${c.insights.aiRecommendation}</div>` : "-"
     )},
     { label: "Branch", keys: collegesData.map(c => c.branch) },
     { label: "Average Package", keys: collegesData.map(c => c.package) },
@@ -45,20 +45,20 @@ function CompareContent() {
     { label: "Closing Rank", keys: collegesData.map(c => c.closingRank.toLocaleString()) },
     
     // Insights
-    { label: "Campus Vibe", keys: collegesData.map(c => c.insights ? c.insights.campusVibe : "-") },
-    { label: "Coding Culture", keys: collegesData.map(c => c.insights ? c.insights.codingCultureReview : "-") },
-    { label: "Placement Reality", keys: collegesData.map(c => c.insights ? c.insights.placementReality : "-") },
-    { label: "Peer Competitiveness", keys: collegesData.map(c => c.insights ? c.insights.peerCompetitiveness : "-") },
-    { label: "Hostel Review", keys: collegesData.map(c => c.insights ? c.insights.hostelReview : "-") },
+    { label: "Campus Vibe", keys: collegesData.map(c => c.insights?.campusVibe || "-") },
+    { label: "Coding Culture", keys: collegesData.map(c => c.insights?.codingCultureReview || "-") },
+    { label: "Placement Reality", keys: collegesData.map(c => c.insights?.placementReality || "-") },
+    { label: "Peer Competitiveness", keys: collegesData.map(c => c.insights?.peerCompetitiveness || "-") },
+    { label: "Hostel Review", keys: collegesData.map(c => c.insights?.hostelReview || "-") },
     
     // Pros & Cons
     { label: "Pros", isHtml: true, keys: collegesData.map(c => 
-      c.insights && Array.isArray(c.insights.pros) 
+      Array.isArray(c.insights?.pros) 
         ? `<ul style="margin:0;padding-left:1.2rem;color:#34d399;font-size:0.85rem">${c.insights.pros.map((p:string) => `<li>${p}</li>`).join("")}</ul>` 
         : "-"
     )},
     { label: "Cons", isHtml: true, keys: collegesData.map(c => 
-      c.insights && Array.isArray(c.insights.cons) 
+      Array.isArray(c.insights?.cons) 
         ? `<ul style="margin:0;padding-left:1.2rem;color:#f87171;font-size:0.85rem">${c.insights.cons.map((x:string) => `<li>${x}</li>`).join("")}</ul>` 
         : "-"
     )},

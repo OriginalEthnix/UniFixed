@@ -6,9 +6,10 @@ import Navbar from "../../components/Navbar";
 import ScrollReveal from "../../components/ScrollReveal";
 import SkeletonCard from "../../components/SkeletonCard";
 import PredictionTabs, { TabType } from "../../components/PredictionTabs";
-import CollegeCard, { CollegeData } from "../../components/CollegeCard";
+import CollegeCard from "../../components/CollegeCard";
 import CompareDrawer from "../../components/CompareDrawer";
-import { useCompare } from "../../hooks/useCompare";
+
+import { CollegeData } from "../../types/college";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 type SortKey = "nirf" | "package" | "fees" | "rank";
@@ -40,7 +41,7 @@ function ResultsContent() {
   const [activeTab,      setActiveTab]      = useState<TabType>("All");
   const [quickFilter,    setQuickFilter]    = useState<QuickFilter>(null);
   const [favorites,      setFavorites]      = useState<number[]>([]);
-  const { compareList, toggleCollege } = useCompare();
+
 
   // ── Fetch favorites from localStorage ────────
   useEffect(() => {
@@ -270,8 +271,6 @@ function ResultsContent() {
               index={index}
               favorites={favorites}
               onFavoriteToggle={handleFavoriteToggle}
-              compareSelected={compareList}
-              onCompareToggle={toggleCollege}
             />
           ))}
         </div>

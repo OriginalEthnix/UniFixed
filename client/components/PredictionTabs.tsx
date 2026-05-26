@@ -1,5 +1,6 @@
 "use client";
 import { useMemo } from "react";
+import { CollegeData } from "./CollegeCard";
 
 export type TabType = "All" | "Safe" | "Target" | "Dream";
 
@@ -11,7 +12,7 @@ interface College {
 interface PredictionTabsProps {
   activeTab: TabType;
   onTabChange: (tab: TabType) => void;
-  colleges: College[];
+  colleges: CollegeData[];
 }
 
 const TABS: { key: TabType; label: string; activeClass: string }[] = [

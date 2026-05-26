@@ -1,96 +1,13 @@
 "use client";
 
-import { Suspense, useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 import Navbar from "../../components/Navbar";
-
-interface CollegeData {
-  id: number;
-  name: string;
-  branch: string;
-  exam: string;
-  closingRank: number;
-  nirf: number;
-  hostel: string;
-  campus: string;
-  fees: string;
-  package: string;
-  codingCulture: string;
-  placementScore: number;
-  category: "Safe" | "Target" | "Dream";
-
-  insights?: {
-  pros?: string[];
-  cons?: string[];
-
-  campusVibe?: string;
-  codingCultureReview?: string;
-  placementReality?: string;
-  hostelReview?: string;
-  peerCompetitiveness?: string;
-  attendanceStrictness?: string;
-  cityLife?: string;
-  startupCulture?: string;
-  facultyQuality?: string;
-  aiRecommendation?: string;
-};
-}
+import { useCompare } from "../../hooks/useCompare";
 
 function CompareContent() {
-  const searchParams = useSearchParams();
-  const [collegesData, setCollegesData] = useState<CollegeData[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { compareList: collegesData, isLoaded, removeCollege } = useCompare();
 
-  // Read requested colleges from URL (up to 3)
-  const req1 = { name: searchParams.get("college1"), branch: searchParams.get("branch1") };
-  const req2 = { name: searchParams.get("college2"), branch: searchParams.get("branch2") };
-  const req3 = { name: searchParams.get("college3"), branch: searchParams.get("branch3") };
-  const requests = [req1, req2, req3].filter(r => r.name && r.branch);
-
-  useEffect(() => {
-    const fetchColleges = async () => {
-      try {
-        setLoading(true);
-        const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
-        // Fetch all colleges and filter matching ones. In a real app, an endpoint like /compare?ids=... would be better.
-        const res = await fetch(`${API_BASE_URL}/colleges`);
-        const data = await res.json();
-        
-        if (Array.isArray(data)) {
-            // Flatten the nested branch structure from /colleges
-            const allBranches: CollegeData[] = [];
-            data.forEach((college: any) => {
-                college.branches.forEach((branch: any) => {
-                    allBranches.push({
-                        ...branch,
-                        name: college.name,
-                        nirf: college.nirf,
-                        hostel: college.hostel,
-                        campus: college.campus,
-                        fees: college.fees,
-                        package: branch.averagePackage,
-                    });
-                });
-            });
-
-            // Match requests
-            const matched = requests.map(req => 
-                allBranches.find(b => b.name === req.name && b.name === req.name && b.branch === req.branch)
-            ).filter(Boolean) as CollegeData[];
-
-            setCollegesData(matched);
-        }
-      } catch (err) {
-        console.error("Fetch error:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    if (requests.length > 0) fetchColleges();
-    else setLoading(false);
-  }, []);
-
-  if (loading) {
+  if (!isLoaded) {
     return (
       <div style={{ padding: "10rem 2rem", textAlign: "center", position: "relative", zIndex: 2 }}>
         <div className="w-12 h-12 border-4 border-white/20 border-t-white rounded-full animate-spin mx-auto mb-4"></div>
@@ -102,9 +19,18 @@ function CompareContent() {
   if (collegesData.length < 2) {
     return (
       <div style={{ padding: "10rem 2rem", textAlign: "center", position: "relative", zIndex: 2 }}>
-        <h1 className="gradient-text" style={{ fontSize: "2rem", fontWeight: 700 }}>Not enough colleges to compare</h1>
-        <p style={{ color: "var(--text-muted)", marginTop: "1rem" }}>Please select at least 2 colleges from the prediction results.</p>
-        <button className="btn-ghost" style={{ marginTop: "1.5rem" }} onClick={() => history.back()}>← Go Back</button>
+        <span style={{ fontSize: "3rem", display: "block", marginBottom: "1rem" }}>⚖️</span>
+        <h1 className="gradient-text" style={{ fontSize: "2rem", fontWeight: 700 }}>
+          {collegesData.length === 0 ? "No colleges selected for comparison yet." : "Not enough colleges to compare"}
+        </h1>
+        <p style={{ color: "var(--text-muted)", marginTop: "1rem" }}>
+          {collegesData.length === 0
+            ? "Go back to the results page and select up to 3 colleges to see them side-by-side."
+            : "Please select at least 2 colleges from the prediction results to compare them."}
+        </p>
+        <button className="btn-neon" style={{ marginTop: "1.5rem" }} onClick={() => history.back()}>
+          ← Go Back to Results
+        </button>
       </div>
     );
   }
@@ -157,8 +83,16 @@ function CompareContent() {
             <tr>
               <th style={{ color: "var(--text-muted)", width: "20%" }}>Feature</th>
               {collegesData.map((c, i) => (
-                <th key={i} style={{ width: `${80 / collegesData.length}%` }}>
+                <th key={c.id || i} style={{ width: `${80 / collegesData.length}%`, position: "relative", paddingBottom: "2rem" }}>
                   <span className="gradient-text">{c.name}</span>
+                  <button 
+                    className="btn-ghost" 
+                    style={{ position: "absolute", bottom: "0.5rem", left: "50%", transform: "translateX(-50%)", padding: "0.25rem 0.5rem", fontSize: "0.75rem" }}
+                    onClick={() => removeCollege(c.id)}
+                    title="Remove from comparison"
+                  >
+                    Remove
+                  </button>
                 </th>
               ))}
             </tr>

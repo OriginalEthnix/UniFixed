@@ -1,31 +1,12 @@
 "use client";
 import { useRouter } from "next/navigation";
+import { useCompare } from "../hooks/useCompare";
 
-interface CollegeData {
-  id: number;
-  name: string;
-  branch: string;
-  exam: string;
-  closingRank: number;
-  nirf: number;
-  hostel: string;
-  campus: string;
-  fees: string;
-  package: string;
-  codingCulture: string;
-  placementScore: number;
-  category: "Safe" | "Target" | "Dream";
-}
-
-interface CompareDrawerProps {
-  selected: CollegeData[];
-  onRemove: (id: number) => void;
-  onClear: () => void;
-}
-
-export default function CompareDrawer({ selected, onRemove, onClear }: CompareDrawerProps) {
+export default function CompareDrawer() {
   const router = useRouter();
-  if (selected.length === 0) return null;
+  const { compareList: selected, removeCollege, clearColleges, isLoaded } = useCompare();
+
+  if (!isLoaded || selected.length === 0) return null;
 
   const handleCompare = () => {
     router.push(`/compare`);
@@ -44,7 +25,7 @@ export default function CompareDrawer({ selected, onRemove, onClear }: CompareDr
           </span>
           <button
             className="compare-chip-remove"
-            onClick={() => onRemove(c.id)}
+            onClick={() => removeCollege(c.id)}
             aria-label={`Remove ${c.name} from compare`}
           >
             ×
@@ -53,7 +34,7 @@ export default function CompareDrawer({ selected, onRemove, onClear }: CompareDr
       ))}
 
       <div style={{ display: "flex", gap: "0.5rem", marginLeft: "auto" }}>
-        <button className="btn-ghost" style={{ padding: "0.5rem 1rem", fontSize: "0.85rem" }} onClick={onClear}>
+        <button className="btn-ghost" style={{ padding: "0.5rem 1rem", fontSize: "0.85rem" }} onClick={clearColleges}>
           Clear
         </button>
         <button

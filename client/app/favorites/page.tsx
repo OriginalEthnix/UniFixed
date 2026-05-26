@@ -3,11 +3,14 @@
 import { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
 import CollegeCard, { CollegeData } from "../../components/CollegeCard";
+import CompareDrawer from "../../components/CompareDrawer";
+import { useCompare } from "../../hooks/useCompare";
 
 export default function FavoritesPage() {
   const [favorites, setFavorites] = useState<number[]>([]);
   const [colleges, setColleges] = useState<CollegeData[]>([]);
   const [loading, setLoading] = useState(true);
+  const { compareList, toggleCollege } = useCompare();
 
   // Load favorites from local storage
   useEffect(() => {
@@ -105,13 +108,14 @@ export default function FavoritesPage() {
                 index={index}
                 favorites={favorites}
                 onFavoriteToggle={handleFavoriteToggle}
-                compareSelected={[]}
-                onCompareToggle={() => {}}
+                compareSelected={compareList}
+                onCompareToggle={toggleCollege}
               />
             ))}
           </div>
         )}
       </div>
+      <CompareDrawer />
     </main>
   );
 }

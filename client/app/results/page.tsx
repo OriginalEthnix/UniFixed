@@ -8,6 +8,7 @@ import SkeletonCard from "../../components/SkeletonCard";
 import PredictionTabs, { TabType } from "../../components/PredictionTabs";
 import CollegeCard, { CollegeData } from "../../components/CollegeCard";
 import CompareDrawer from "../../components/CompareDrawer";
+import { useCompare } from "../../hooks/useCompare";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 type SortKey = "nirf" | "package" | "fees" | "rank";
@@ -39,16 +40,13 @@ function ResultsContent() {
   const [activeTab,      setActiveTab]      = useState<TabType>("All");
   const [quickFilter,    setQuickFilter]    = useState<QuickFilter>(null);
   const [favorites,      setFavorites]      = useState<number[]>([]);
-  const [compareList,    setCompareList]    = useState<CollegeData[]>([]);
+  const { compareList, toggleCollege } = useCompare();
 
-  // ── Fetch favorites and compare state from localStorage ────────
+  // ── Fetch favorites from localStorage ────────
   useEffect(() => {
     try {
       const storedFavs = localStorage.getItem("unifixed_favorites");
       if (storedFavs) setFavorites(JSON.parse(storedFavs));
-      
-      const storedCompare = localStorage.getItem("compareColleges");
-      if (storedCompare) setCompareList(JSON.parse(storedCompare));
     } catch { /* ignore */ }
   }, []);
 
@@ -86,35 +84,6 @@ function ResultsContent() {
       try { localStorage.setItem("unifixed_favorites", JSON.stringify(next)); } catch { /* ignore */ }
       return next;
     });
-  }, []);
-
-  // ── Compare ───────────────────────────────────────────────────────────────────
-  const handleCompareToggle = useCallback((college: CollegeData) => {
-    setCompareList(prev => {
-      let next;
-      if (prev.some(c => c.id === college.id)) {
-        next = prev.filter(c => c.id !== college.id);
-      } else if (prev.length < 3) {
-        next = [...prev, college];
-      } else {
-        next = prev;
-      }
-      try { localStorage.setItem("compareColleges", JSON.stringify(next)); } catch { /* ignore */ }
-      return next;
-    });
-  }, []);
-
-  const handleCompareRemove = useCallback((id: number) => {
-    setCompareList(prev => {
-      const next = prev.filter(c => c.id !== id);
-      try { localStorage.setItem("compareColleges", JSON.stringify(next)); } catch { /* ignore */ }
-      return next;
-    });
-  }, []);
-
-  const handleCompareClear = useCallback(() => {
-    setCompareList([]);
-    try { localStorage.setItem("compareColleges", JSON.stringify([])); } catch { /* ignore */ }
   }, []);
 
   // ── Filtering + sorting ───────────────────────────────────────────────────────
@@ -302,18 +271,14 @@ function ResultsContent() {
               favorites={favorites}
               onFavoriteToggle={handleFavoriteToggle}
               compareSelected={compareList}
-              onCompareToggle={handleCompareToggle}
+              onCompareToggle={toggleCollege}
             />
           ))}
         </div>
       )}
 
       {/* ── Compare floating drawer ── */}
-      <CompareDrawer
-        selected={compareList}
-        onRemove={handleCompareRemove}
-        onClear={handleCompareClear}
-      />
+      <CompareDrawer />
     </div>
   );
 }

@@ -1,0 +1,90 @@
+[
+  {
+    "name": "IIT Bombay",
+    "pros": [
+      "Extremely strong coding and startup culture",
+      "Prime location in Mumbai with excellent industry connects",
+      "Highly prestigious alumni network and funding opportunities"
+    ],
+    "cons": [
+      "Extremely competitive and high-pressure peer environment",
+      "Older hostel infrastructure in some blocks"
+    ],
+    "campusVibe": "An energetic, ambitious, and slightly overwhelming atmosphere. Students are constantly building, participating in hackathons, and preparing for competitive programming or finance roles.",
+    "codingCultureReview": "World-class. The competitive programming culture is intense, and the student-led clubs are heavily backed by tech giants.",
+    "placementReality": "Top-tier packages, especially for quant, HFT, and software roles. However, the competition among peers for Day 1 companies is cut-throat.",
+    "hostelReview": "A mix of very old and newly built hostels. Space can be constrained, but the hostel culture is deeply bonding.",
+    "peerCompetitiveness": "Very High. You are surrounded by the top 1% of the country.",
+    "attendanceStrictness": "Moderate. Professors expect attendance, but the real learning often happens in clubs and project groups.",
+    "cityLife": "Mumbai offers an unmatched cosmopolitan experience, though living outside campus can be expensive.",
+    "startupCulture": "Unmatched in India. SINE (incubator) is highly active, and finding co-founders is very easy.",
+    "facultyQuality": "Exceptional, with many professors heavily involved in industry consulting and cutting-edge research.",
+    "aiRecommendation": "Best for extremely ambitious students aiming for top-tier software, quant, or startup founder roles."
+  },
+  {
+    "name": "IIT Delhi",
+    "pros": [
+      "Excellent startup ecosystem and proximity to policy/tech hubs",
+      "Strong placement records in tech, finance, and consulting",
+      "Vibrant campus life with huge cultural fests"
+    ],
+    "cons": [
+      "Academic curriculum is notoriously rigorous and grading can be tough",
+      "Air quality in Delhi during winters can be a concern"
+    ],
+    "campusVibe": "Fast-paced and highly entrepreneurial. There's a strong focus on not just engineering, but also consulting, finance, and policy.",
+    "codingCultureReview": "Very strong, though slightly more balanced with hardware and startup focus compared to other top IITs.",
+    "placementReality": "Outstanding. Almost all major tech and consulting firms visit. High median packages.",
+    "hostelReview": "Hostels are decent but often crowded. The mess food is average, but the surrounding areas (Hauz Khas) offer great options.",
+    "peerCompetitiveness": "High. The academic pressure is significant due to tough grading curves.",
+    "attendanceStrictness": "High. A 75% attendance rule is strictly enforced in many courses.",
+    "cityLife": "Excellent. Located in the heart of South Delhi with great connectivity and access to culture/food.",
+    "startupCulture": "Phenomenal. Delhi NCR is a massive startup hub, and IITD alumni are heavily represented.",
+    "facultyQuality": "Top-notch, heavily focused on deep-tech research.",
+    "aiRecommendation": "Ideal for students seeking a balance of elite tech placements and strong startup/consulting exposure."
+  },
+  {
+    "name": "IIT Madras",
+    "pros": [
+      "Best engineering research ecosystem in India",
+      "Beautiful, lush green campus",
+      "Strong focus on deep tech and core engineering"
+    ],
+    "cons": [
+      "Can be academically grueling",
+      "Food and weather might require adjustment for North Indian students"
+    ],
+    "campusVibe": "More laid-back socially but intensely rigorous academically. The campus is a dense forest with deer and monkeys, offering a unique serene environment.",
+    "codingCultureReview": "Strong, but with a heavier emphasis on research, AI/ML, and deep tech compared to pure competitive programming.",
+    "placementReality": "Stellar placements across IT, analytics, and core engineering. Very strong in R&D roles.",
+    "hostelReview": "Hostels are reasonably good. The campus is massive, so bicycles are a must.",
+    "peerCompetitiveness": "High academically, but the student community is generally collaborative.",
+    "attendanceStrictness": "Strict. Academic discipline is highly valued here.",
+    "cityLife": "Chennai is a major tech hub, though the campus itself is self-sufficient.",
+    "startupCulture": "Very strong, especially for deep-tech, hardware, and SaaS startups via the IITM Research Park.",
+    "facultyQuality": "Arguably the best in India for core engineering and research.",
+    "aiRecommendation": "Best for students interested in deep tech, research, or a slightly calmer but academically rigorous environment."
+  },
+  {
+    "name": "DTU",
+    "pros": [
+      "Massive tech placement numbers and strong alumni network",
+      "Relatively relaxed academic pressure",
+      "Excellent coding culture"
+    ],
+    "cons": [
+      "Very large batch sizes mean high internal competition",
+      "Infrastructure is good but feels crowded"
+    ],
+    "campusVibe": "Very lively, practical, and highly focused on placements and coding. The 'chill' factor is higher here compared to IITs.",
+    "codingCultureReview": "Excellent. The entire campus revolves around LeetCode, CP, and development. Huge peer-learning network.",
+    "placementReality": "Top tech companies hire in large numbers. However, you must stand out among a very large batch.",
+    "hostelReview": "Hostels are decent but securing one can be tough for Delhi residents due to limited capacity.",
+    "peerCompetitiveness": "High for placements, but relaxed for academics.",
+    "attendanceStrictness": "Lenient. Students get plenty of time to focus on coding and skills.",
+    "cityLife": "Delhi location offers great exposure and connectivity.",
+    "startupCulture": "Growing rapidly, with many successful tech startups emerging recently.",
+    "facultyQuality": "Good, but the primary learning source is often peer groups.",
+    "aiRecommendation": "Excellent ROI for coding-focused students who want strong tech placements without extreme academic pressure."
+  }
+]

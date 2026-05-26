@@ -1,442 +1,344 @@
 "use client";
 
-import { Suspense } from "react";
-import { useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense, useEffect, useState, useMemo, useCallback } from "react";
+import { useSearchParams } from "next/navigation";
 import Navbar from "../../components/Navbar";
 import ScrollReveal from "../../components/ScrollReveal";
+import SkeletonCard from "../../components/SkeletonCard";
+import PredictionTabs, { TabType } from "../../components/PredictionTabs";
+import CollegeCard, { CollegeData } from "../../components/CollegeCard";
+import CompareDrawer from "../../components/CompareDrawer";
 
+// ── Types ─────────────────────────────────────────────────────────────────────
+type SortKey = "nirf" | "package" | "fees" | "rank";
+type QuickFilter = "lowFees" | "topNirf" | "bestPlacements" | null;
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+function parseFees(fees: string): number {
+  const m = fees.match(/[\d.]+/);
+  return m ? parseFloat(m[0]) : 999;
+}
+function parsePackage(pkg: string): number {
+  const m = pkg.match(/[\d.]+/);
+  return m ? parseFloat(m[0]) : 0;
+}
+
+// ── Main content ──────────────────────────────────────────────────────────────
 function ResultsContent() {
   const searchParams = useSearchParams();
   const userRank = Number(searchParams.get("rank"));
-  const category = searchParams.get("category");
-  const quota = searchParams.get("quota");
-  const [search, setSearch] = useState("");
-  const [sortBy, setSortBy] = useState("nirf");
-  const [colleges, setColleges] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const exam     = searchParams.get("exam")     || "JEE Main";
+  const category = searchParams.get("category") || "General";
+  const quota    = searchParams.get("quota")    || "AI";
 
-  const router = useRouter();
+  const [colleges,       setColleges]       = useState<CollegeData[]>([]);
+  const [loading,        setLoading]        = useState(true);
+  const [error,          setError]          = useState("");
+  const [search,         setSearch]         = useState("");
+  const [sortBy,         setSortBy]         = useState<SortKey>("nirf");
+  const [activeTab,      setActiveTab]      = useState<TabType>("All");
+  const [quickFilter,    setQuickFilter]    = useState<QuickFilter>(null);
+  const [favorites,      setFavorites]      = useState<number[]>([]);
+  const [compareList,    setCompareList]    = useState<CollegeData[]>([]);
 
+  // ── Fetch favorites and compare state from localStorage ────────
+  useEffect(() => {
+    try {
+      const storedFavs = localStorage.getItem("unifixed_favorites");
+      if (storedFavs) setFavorites(JSON.parse(storedFavs));
+      
+      const storedCompare = localStorage.getItem("compareColleges");
+      if (storedCompare) setCompareList(JSON.parse(storedCompare));
+    } catch { /* ignore */ }
+  }, []);
+
+  // ── Fetch predictions ────────────────────────────────────────────────────────
   useEffect(() => {
     const fetchColleges = async () => {
       try {
         setLoading(true);
-        const response = await fetch(
-          `https://unifixed.onrender.com/predict?rank=${userRank}&category=${category}&quota=${quota}`
+        const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+        const res = await fetch(
+          `${API_BASE_URL}/predict?rank=${userRank}&exam=${encodeURIComponent(exam)}&category=${encodeURIComponent(category)}&quota=${encodeURIComponent(quota)}`
         );
-
-        const data = await response.json();
-
+        const data = await res.json();
+        console.log(`[Results] Received ${Array.isArray(data) ? data.length : 0} results`);
         if (Array.isArray(data)) {
           setColleges(data);
         } else {
-          console.error("Backend returned an error or non-array:", data);
+          console.error("Non-array response:", data);
           setColleges([]);
         }
-      } catch (error) {
-    console.error("Error fetching colleges:", error);
-
-    setError(
-      "Server is waking up or unavailable. Please try again in a few seconds."
-      );
-    }
-      finally {
-    setLoading(false);
-  }
+      } catch (err) {
+        console.error("Fetch error:", err);
+        setError("Server is waking up or unavailable. Please try again in a few seconds.");
+      } finally {
+        setLoading(false);
+      }
     };
-
     fetchColleges();
   }, []);
-  if (loading) {
-  return (
-    <main className="min-h-screen bg-black text-white flex items-center justify-center">
-      <div className="text-center">
-        <div className="w-12 h-12 border-4 border-white/20 border-t-white rounded-full animate-spin mx-auto mb-4"></div>
 
-        <p className="text-zinc-400 text-lg">
-          Predicting your colleges...
-        </p>
-      </div>
-    </main>
-  );
-}
+  // ── Favorites ────────────────────────────────────────────────────────────────
+  const handleFavoriteToggle = useCallback((id: number) => {
+    setFavorites(prev => {
+      const next = prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id];
+      try { localStorage.setItem("unifixed_favorites", JSON.stringify(next)); } catch { /* ignore */ }
+      return next;
+    });
+  }, []);
 
-if (error) {
-  return (
-    <main className="min-h-screen bg-black text-white flex items-center justify-center px-6">
-      <div
-        className="glass-card"
-        style={{
-          padding: "2rem",
-          maxWidth: "500px",
-          textAlign: "center",
-        }}
-      >
-        <h2
-          style={{
-            fontSize: "1.8rem",
-            fontWeight: 700,
-            marginBottom: "1rem",
-            color: "#ff6b6b",
-          }}
-        >
-          Oops!
-        </h2>
+  // ── Compare ───────────────────────────────────────────────────────────────────
+  const handleCompareToggle = useCallback((college: CollegeData) => {
+    setCompareList(prev => {
+      let next;
+      if (prev.some(c => c.id === college.id)) {
+        next = prev.filter(c => c.id !== college.id);
+      } else if (prev.length < 3) {
+        next = [...prev, college];
+      } else {
+        next = prev;
+      }
+      try { localStorage.setItem("compareColleges", JSON.stringify(next)); } catch { /* ignore */ }
+      return next;
+    });
+  }, []);
 
-        <p
-          style={{
-            color: "var(--text-muted)",
-            lineHeight: 1.7,
-          }}
-        >
-          {error}
-        </p>
-      </div>
-    </main>
-  );
-}
+  const handleCompareRemove = useCallback((id: number) => {
+    setCompareList(prev => {
+      const next = prev.filter(c => c.id !== id);
+      try { localStorage.setItem("compareColleges", JSON.stringify(next)); } catch { /* ignore */ }
+      return next;
+    });
+  }, []);
 
-const filteredColleges = [...colleges]
-  .filter((college) =>
-    college.name
-      .toLowerCase()
-      .includes(search.toLowerCase())
-  )
-  .sort((a, b) => {
-    if (sortBy === "nirf") {
-      return a.nirf - b.nirf;
+  const handleCompareClear = useCallback(() => {
+    setCompareList([]);
+    try { localStorage.setItem("compareColleges", JSON.stringify([])); } catch { /* ignore */ }
+  }, []);
+
+  // ── Filtering + sorting ───────────────────────────────────────────────────────
+  const displayedColleges = useMemo(() => {
+    let list = [...colleges];
+
+    // Tab filter
+    if (activeTab !== "All") list = list.filter(c => c.category === activeTab);
+
+    // Search filter
+    if (search.trim()) {
+      const q = search.toLowerCase();
+      list = list.filter(c =>
+        c.name.toLowerCase().includes(q) || c.branch.toLowerCase().includes(q)
+      );
     }
 
-    return (
-      parseInt(b.package) -
-      parseInt(a.package)
-    );
-  });
+    // Quick filters
+    if (quickFilter === "lowFees")       list = list.filter(c => parseFees(c.fees) <= 10);
+    if (quickFilter === "topNirf")       list = list.filter(c => c.nirf <= 30);
+    if (quickFilter === "bestPlacements")list = list.filter(c => c.placementScore >= 8);
 
+    // Sort
+    list.sort((a, b) => {
+      if (sortBy === "nirf")    return a.nirf - b.nirf;
+      if (sortBy === "rank")    return a.closingRank - b.closingRank;
+      if (sortBy === "fees")    return parseFees(a.fees) - parseFees(b.fees);
+      if (sortBy === "package") return parsePackage(b.package) - parsePackage(a.package);
+      return 0;
+    });
+
+    return list;
+  }, [colleges, activeTab, search, quickFilter, sortBy]);
+
+  // ── Loading skeletons ─────────────────────────────────────────────────────────
+  if (loading) {
+    return (
+      <div style={{ position: "relative", zIndex: 2, padding: "7rem 2rem 4rem", maxWidth: "1200px", margin: "0 auto" }}>
+        <div style={{ marginBottom: "2rem" }}>
+          <div className="skeleton" style={{ height: "48px", width: "320px", marginBottom: "0.75rem" }} />
+          <div className="skeleton" style={{ height: "18px", width: "240px" }} />
+        </div>
+        <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+          {[...Array(4)].map((_, i) => <SkeletonCard key={i} />)}
+        </div>
+      </div>
+    );
+  }
+
+  // ── Error state ───────────────────────────────────────────────────────────────
+  if (error) {
+    return (
+      <div style={{ position: "relative", zIndex: 2, padding: "10rem 2rem", display: "flex", justifyContent: "center" }}>
+        <div className="glass-card" style={{ padding: "2.5rem", maxWidth: "480px", textAlign: "center" }}>
+          <span style={{ fontSize: "3rem", display: "block", marginBottom: "1rem" }}>⚠️</span>
+          <h2 style={{ fontSize: "1.6rem", fontWeight: 700, color: "#f87171", marginBottom: "0.75rem" }}>Connection Error</h2>
+          <p style={{ color: "var(--text-muted)", lineHeight: 1.7 }}>{error}</p>
+          <button className="btn-neon" style={{ marginTop: "1.5rem" }} onClick={() => window.location.reload()}>
+            Retry
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div
-      style={{
-        position: "relative",
-        zIndex: 2,
-        padding: "7rem 2rem 4rem",
-        maxWidth: "1200px",
-        margin: "0 auto",
-      }}
-    >
-      {/* Page Header */}
-      <div style={{ marginBottom: "2.5rem" }}>
-        <h1
-          className="gradient-text"
-          style={{
-            fontSize: "clamp(2.5rem, 5vw, 3.5rem)",
-            fontWeight: 800,
-            marginBottom: "0.5rem",
-            animation: "fadeUp 0.6s ease-out both",
-          }}
-        >
+    <div style={{ position: "relative", zIndex: 2, padding: "7rem 1.5rem 8rem", maxWidth: "1200px", margin: "0 auto" }}>
+
+      {/* ── Page header ── */}
+      <div style={{ marginBottom: "2rem", animation: "fadeUp 0.6s ease-out both" }}>
+        <h1 className="gradient-text" style={{ fontSize: "clamp(2rem, 5vw, 3rem)", fontWeight: 800, marginBottom: "0.4rem" }}>
           Predicted Colleges
         </h1>
-        <p
-          style={{
-            color: "var(--text-muted)",
-            fontSize: "1.1rem",
-            animation: "fadeUp 0.6s ease-out 0.15s both",
-          }}
-        >
-          Showing results for rank{" "}
-          <span
-            style={{ color: "var(--neon-cyan)", fontWeight: 600 }}
-          >
-            {userRank}
-          </span>
+        <p style={{ color: "var(--text-muted)", fontSize: "1rem" }}>
+          {exam} &middot; Rank <span style={{ color: "var(--neon-cyan)", fontWeight: 600 }}>{userRank.toLocaleString()}</span>
+          &nbsp;&middot; {category} &middot; {quota} Quota
         </p>
       </div>
 
-      {/* Filters */}
-      <div
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          gap: "1rem",
-          marginBottom: "2rem",
-          animation: "fadeUp 0.6s ease-out 0.3s both",
-        }}
-      >
-        <input
-          type="text"
-          placeholder="Search colleges..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="input-glass"
-          style={{ flex: 1, minWidth: "200px" }}
-        />
+      {/* ── Summary banner ── */}
+      {colleges.length > 0 && (
+        <div className="summary-banner" style={{ marginBottom: "1.5rem", animation: "fadeUp 0.6s ease-out 0.1s both" }}>
+          <span>🎓</span>
+          <span>
+            Showing <strong>{displayedColleges.length}</strong> of <strong>{colleges.length}</strong> colleges for{" "}
+            <strong>{exam}</strong> · <strong>{category}</strong> · <strong>{quota} Quota</strong>
+          </span>
+          {colleges.filter(c => c.category === "Safe").length > 0 && (
+            <span style={{ marginLeft: "auto", color: "#34d399", fontSize: "0.85rem", fontWeight: 600 }}>
+              ✓ {colleges.filter(c => c.category === "Safe").length} Safe choices found
+            </span>
+          )}
+        </div>
+      )}
 
-        <select
-          value={sortBy}
-          onChange={(e) => setSortBy(e.target.value)}
-          className="input-glass"
-          style={{ minWidth: "180px", flex: "0 0 auto" }}
-        >
-          <option value="nirf">Sort by NIRF</option>
-          <option value="package">Sort by Package</option>
-        </select>
-      </div>
+      {/* ── Controls bar ── */}
+      <div style={{ display: "flex", flexDirection: "column", gap: "1rem", marginBottom: "1.75rem", animation: "fadeUp 0.6s ease-out 0.2s both" }}>
 
-      {filteredColleges.length === 0 && (
-  <div
-    style={{
-      textAlign: "center",
-      padding: "5rem 0",
-    }}
-  >
-    <h2
-      style={{
-        fontSize: "2rem",
-        fontWeight: 700,
-        marginBottom: "0.75rem",
-        color: "var(--text-primary)",
-      }}
-    >
-      No matching colleges found
-    </h2>
+        {/* Tabs + Sort row */}
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "0.75rem", alignItems: "center" }}>
+          <PredictionTabs
+            activeTab={activeTab}
+            onTabChange={(tab) => { setActiveTab(tab); setQuickFilter(null); }}
+            colleges={colleges}
+          />
+          <div style={{ marginLeft: "auto", display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
+            <select
+              value={sortBy}
+              onChange={e => setSortBy(e.target.value as SortKey)}
+              className="input-glass"
+              style={{ minWidth: "180px", fontSize: "0.875rem", padding: "0.55rem 2.5rem 0.55rem 1rem" }}
+              id="sort-select"
+            >
+              <option value="nirf">Sort: Best NIRF</option>
+              <option value="package">Sort: Highest Package</option>
+              <option value="fees">Sort: Lowest Fees</option>
+              <option value="rank">Sort: Closing Rank ↑</option>
+            </select>
+          </div>
+        </div>
 
-    <p
-      style={{
-        color: "var(--text-muted)",
-        fontSize: "1rem",
-      }}
-    >
-      Try searching with another college name.
-    </p>
-  </div>
-)}
-
-      {/* College Cards */}
-{filteredColleges.length > 0 && (
-  <div
-    style={{
-      display: "flex",
-      flexDirection: "column",
-      gap: "1.5rem",
-    }}
-  >
-        {filteredColleges.map((college, index) => {
-            const placementClass =
-              college.placementScore >= 8
-                ? "high"
-                : college.placementScore >= 6
-                ? "mid"
-                : "low";
-
-            const badgeClass =
-              college.category === "Safe"
-                ? "badge-safe"
-                : college.category === "Target"
-                ? "badge-target"
-                : "badge-dream";
-
+        {/* Search + Quick filter chips row */}
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "0.6rem", alignItems: "center" }}>
+          <input
+            type="text"
+            placeholder="Search college or branch..."
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            className="input-glass"
+            style={{ flex: "1 1 200px", fontSize: "0.875rem", padding: "0.55rem 1rem" }}
+            id="college-search"
+          />
+          {(["lowFees", "topNirf", "bestPlacements"] as const).map((key) => {
+            const labels: Record<string, string> = { lowFees: "💸 Low Fees", topNirf: "🏆 Top NIRF", bestPlacements: "🚀 Best Placements" };
             return (
-              <div
-                key={index}
-                className="glass-card fade-section"
-                style={{
-                  padding: "1.75rem",
-                  transitionDelay: `${index * 0.05}s`,
-                }}
+              <button
+                key={key}
+                className={`filter-chip ${quickFilter === key ? "active" : ""}`}
+                onClick={() => setQuickFilter(prev => prev === key ? null : key)}
               >
-                {/* Top row */}
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "flex-start",
-                    justifyContent: "space-between",
-                    flexWrap: "wrap",
-                    gap: "1rem",
-                  }}
-                >
-                  <div>
-                    <h2
-                      style={{
-                        fontSize: "1.4rem",
-                        fontWeight: 700,
-                        color: "var(--text-primary)",
-                        marginBottom: "0.3rem",
-                      }}
-                    >
-                      {college.name}
-                    </h2>
-                    <p
-                      style={{
-                        color: "var(--text-muted)",
-                        fontSize: "0.95rem",
-                      }}
-                    >
-                      {college.branch}
-                    </p>
-                  </div>
-
-                  <div style={{ textAlign: "right" }}>
-                    <p
-                      style={{
-                        fontSize: "1.15rem",
-                        fontWeight: 700,
-                        color: "var(--text-primary)",
-                      }}
-                    >
-                      {college.package}
-                    </p>
-                    <p
-                      style={{
-                        color: "var(--text-dim)",
-                        fontSize: "0.8rem",
-                      }}
-                    >
-                      Avg Package
-                    </p>
-                  </div>
-                </div>
-
-                {/* Badges row */}
-                <div
-                  style={{
-                    display: "flex",
-                    gap: "0.75rem",
-                    flexWrap: "wrap",
-                    marginTop: "1.25rem",
-                  }}
-                >
-                  <span className="stat-chip">NIRF #{college.nirf}</span>
-                  <span className="stat-chip">
-                    Closing Rank {college.closingRank}
-                  </span>
-                  <span className={`badge ${badgeClass}`}>
-                    {college.category}
-                  </span>
-                </div>
-
-                {/* Detail cards */}
-                <div
-                  style={{
-                    display: "grid",
-                    gridTemplateColumns:
-                      "repeat(auto-fit, minmax(120px, 1fr))",
-                    gap: "0.75rem",
-                    marginTop: "1.25rem",
-                  }}
-                >
-                  <div className="detail-card">
-                    <p className="label">Hostel</p>
-                    <p className="value">{college.hostel}</p>
-                  </div>
-                  <div className="detail-card">
-                    <p className="label">Campus</p>
-                    <p className="value">{college.campus}</p>
-                  </div>
-                  <div className="detail-card">
-                    <p className="label">Coding Culture</p>
-                    <p className="value">{college.codingCulture}</p>
-                  </div>
-                  <div className="detail-card">
-                    <p className="label">Fees</p>
-                    <p className="value">{college.fees}</p>
-                  </div>
-                </div>
-
-                {/* Placement bar */}
-                <div style={{ marginTop: "1.25rem" }}>
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      marginBottom: "0.5rem",
-                    }}
-                  >
-                    <span
-                      style={{
-                        fontSize: "0.8rem",
-                        color: "var(--text-dim)",
-                      }}
-                    >
-                      Placement Strength
-                    </span>
-                    <span
-                      style={{
-                        fontSize: "0.8rem",
-                        fontWeight: 600,
-                        color: "var(--text-primary)",
-                      }}
-                    >
-                      {college.placementScore}/10
-                    </span>
-                  </div>
-                  <div className="placement-bar-track">
-                    <div
-                      className={`placement-bar-fill ${placementClass}`}
-                      style={{
-                        width: `${college.placementScore * 10}%`,
-                      }}
-                    />
-                  </div>
-                </div>
-
-                {/* Compare button */}
-                <button
-                  onClick={() =>
-                    router.push(
-                      `/compare?college=${encodeURIComponent(
-                        college.name
-                      )}`
-                    )
-                  }
-                  className="btn-ghost"
-                  style={{ marginTop: "1.25rem" }}
-                >
-                  Compare →
-                </button>
-              </div>
+                {labels[key]}
+              </button>
             );
           })}
+          {(search || quickFilter) && (
+            <button
+              className="filter-chip"
+              onClick={() => { setSearch(""); setQuickFilter(null); }}
+              style={{ borderColor: "var(--neon-pink)", color: "var(--neon-pink)" }}
+            >
+              ✕ Clear
+            </button>
+          )}
+        </div>
       </div>
+
+      {/* ── Empty state ── */}
+      {displayedColleges.length === 0 && (
+        <div className="empty-state">
+          <span className="empty-icon">🔍</span>
+          <h2 style={{ fontSize: "1.75rem", fontWeight: 700, color: "var(--text-primary)", marginBottom: "0.75rem" }}>
+            No colleges found
+          </h2>
+          <p style={{ color: "var(--text-muted)", maxWidth: "400px", margin: "0 auto", lineHeight: 1.7 }}>
+            {colleges.length === 0
+              ? "No colleges match your rank, category, and quota. Try changing your filters."
+              : "Try clearing the search or removing quick filters."}
+          </p>
+          {colleges.length === 0 && (
+            <button className="btn-ghost" style={{ marginTop: "1.5rem" }} onClick={() => history.back()}>
+              ← Go Back
+            </button>
+          )}
+        </div>
       )}
-      </div>
+
+      {/* ── College cards ── */}
+      {displayedColleges.length > 0 && (
+        <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+          {displayedColleges.map((college, index) => (
+            <CollegeCard
+              key={college.id}
+              college={college}
+              index={index}
+              favorites={favorites}
+              onFavoriteToggle={handleFavoriteToggle}
+              compareSelected={compareList}
+              onCompareToggle={handleCompareToggle}
+            />
+          ))}
+        </div>
+      )}
+
+      {/* ── Compare floating drawer ── */}
+      <CompareDrawer
+        selected={compareList}
+        onRemove={handleCompareRemove}
+        onClear={handleCompareClear}
+      />
+    </div>
   );
 }
 
+// ── Page wrapper ───────────────────────────────────────────────────────────────
 export default function ResultsPage() {
   return (
     <main className="page-wrapper">
-      {/* Dot grid */}
       <div className="dot-grid-overlay" />
 
-      {/* Background orbs */}
-      <div
-        className="orb orb-purple"
-        style={{
-          width: "400px",
-          height: "400px",
-          top: "5%",
-          right: "-5%",
-          opacity: 0.3,
-        }}
-      />
-      <div
-        className="orb orb-cyan"
-        style={{
-          width: "350px",
-          height: "350px",
-          bottom: "10%",
-          left: "-5%",
-          opacity: 0.25,
-          animationDelay: "3s",
-        }}
-      />
+      <div className="orb orb-purple" style={{ width: "500px", height: "500px", top: "0%", right: "-10%", opacity: 0.25 }} />
+      <div className="orb orb-cyan"   style={{ width: "400px", height: "400px", bottom: "15%", left: "-8%", opacity: 0.2, animationDelay: "3s" }} />
+      <div className="orb orb-pink"   style={{ width: "300px", height: "300px", top: "50%", left: "40%", opacity: 0.12, animationDelay: "6s" }} />
 
       <Navbar />
 
-      <Suspense fallback={null}>
+      <Suspense
+        fallback={
+          <div style={{ position: "relative", zIndex: 2, padding: "7rem 2rem 4rem", maxWidth: "1200px", margin: "0 auto" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+              {[...Array(4)].map((_, i) => <SkeletonCard key={i} />)}
+            </div>
+          </div>
+        }
+      >
         <ResultsContent />
       </Suspense>
 

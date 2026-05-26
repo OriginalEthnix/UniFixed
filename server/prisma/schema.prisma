@@ -21,11 +21,13 @@ model College {
   fees      String
 
   branches  Branch[]
+  insights  CollegeInsight?
 }
 
 model Branch {
   id               Int      @id @default(autoincrement())
   name             String
+  exam             String
   category         String
   quota            String
   closingRank      Int
@@ -35,4 +37,27 @@ model Branch {
 
   collegeId        Int
   college          College  @relation(fields: [collegeId], references: [id])
+
+  @@unique([name, exam, category, quota, collegeId])
+}
+
+model CollegeInsight {
+  id                     Int      @id @default(autoincrement())
+  
+  pros                   Json
+  cons                   Json
+  
+  campusVibe             String
+  codingCultureReview    String
+  placementReality       String
+  hostelReview           String
+  peerCompetitiveness    String
+  attendanceStrictness   String
+  cityLife               String
+  startupCulture         String
+  facultyQuality         String
+  aiRecommendation       String
+  
+  collegeId              Int      @unique
+  college                College  @relation(fields: [collegeId], references: [id])
 }

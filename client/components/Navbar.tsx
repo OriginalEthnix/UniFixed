@@ -25,6 +25,9 @@ export default function Navbar() {
         <Link href="/" className="nav-link">
           Home
         </Link>
+        <Link href="/favorites" className="nav-link">
+          Favorites
+        </Link>
         <Link href="/compare" className="nav-link">
           Compare
         </Link>

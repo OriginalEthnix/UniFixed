@@ -1,8 +1,143 @@
-college,branch,category,quota,closingRank,nirf,package,hostel,campus,codingCulture,fees,placementScore
-IIT Bombay,CSE,General,AI,67,3,36 LPA,9/10,10/10,10/10,12 Lakhs,10
-IIT Delhi,CSE,General,AI,115,2,34 LPA,9/10,10/10,10/10,12 Lakhs,10
-NIT Trichy,CSE,OBC,Other State,4800,9,18 LPA,8/10,9/10,9/10,8 Lakhs,9
-DTU,CSE,General,Home State,10500,29,16 LPA,7/10,8/10,9/10,9 Lakhs,8
-NSUT,CSE,General,Home State,12500,60,15 LPA,7/10,8/10,8/10,9 Lakhs,8
-IIIT Hyderabad,CSE,General,AI,1200,55,30 LPA,8/10,8/10,10/10,14 Lakhs,10
-BITS Pilani,CSE,General,AI,3500,20,28 LPA,9/10,9/10,9/10,25 Lakhs,9
+college,branch,exam,category,quota,closingRank,nirf,package,hostel,campus,codingCulture,fees,placementScore
+IIT Bombay,CSE,JEE Advanced,General,AI,67,3,36 LPA,9/10,10/10,10/10,12 Lakhs,10
+IIT Bombay,CSE,JEE Advanced,OBC-NCL,AI,145,3,36 LPA,9/10,10/10,10/10,12 Lakhs,10
+IIT Bombay,CSE,JEE Advanced,SC,AI,310,3,36 LPA,9/10,10/10,10/10,12 Lakhs,10
+IIT Bombay,CSE,JEE Advanced,ST,AI,512,3,36 LPA,9/10,10/10,10/10,12 Lakhs,10
+IIT Bombay,ECE,JEE Advanced,General,AI,420,3,28 LPA,9/10,10/10,10/10,12 Lakhs,9
+IIT Bombay,ECE,JEE Advanced,OBC-NCL,AI,680,3,28 LPA,9/10,10/10,10/10,12 Lakhs,9
+IIT Bombay,Mechanical,JEE Advanced,General,AI,1150,3,18 LPA,9/10,10/10,8/10,12 Lakhs,8
+IIT Delhi,CSE,JEE Advanced,General,AI,115,2,34 LPA,9/10,10/10,10/10,12 Lakhs,10
+IIT Delhi,CSE,JEE Advanced,OBC-NCL,AI,210,2,34 LPA,9/10,10/10,10/10,12 Lakhs,10
+IIT Delhi,CSE,JEE Advanced,SC,AI,490,2,34 LPA,9/10,10/10,10/10,12 Lakhs,10
+IIT Delhi,CSE,JEE Advanced,ST,AI,620,2,34 LPA,9/10,10/10,10/10,12 Lakhs,10
+IIT Delhi,ECE,JEE Advanced,General,AI,510,2,26 LPA,9/10,10/10,9/10,12 Lakhs,9
+IIT Delhi,ECE,JEE Advanced,OBC-NCL,AI,850,2,26 LPA,9/10,10/10,9/10,12 Lakhs,9
+IIT Delhi,Mechanical,JEE Advanced,General,AI,1420,2,16 LPA,9/10,10/10,7/10,12 Lakhs,8
+IIT Madras,CSE,JEE Advanced,General,AI,180,1,32 LPA,8/10,10/10,10/10,11 Lakhs,10
+IIT Madras,CSE,JEE Advanced,OBC-NCL,AI,290,1,32 LPA,8/10,10/10,10/10,11 Lakhs,10
+IIT Madras,CSE,JEE Advanced,SC,AI,570,1,32 LPA,8/10,10/10,10/10,11 Lakhs,10
+IIT Madras,ECE,JEE Advanced,General,AI,640,1,24 LPA,8/10,10/10,9/10,11 Lakhs,9
+IIT Madras,Electrical,JEE Advanced,General,AI,920,1,22 LPA,8/10,10/10,8/10,11 Lakhs,9
+IIT Madras,Mechanical,JEE Advanced,General,AI,1680,1,16 LPA,8/10,10/10,7/10,11 Lakhs,8
+IIT Kharagpur,CSE,JEE Advanced,General,AI,340,4,28 LPA,8/10,9/10,9/10,10 Lakhs,9
+IIT Kharagpur,CSE,JEE Advanced,OBC-NCL,AI,560,4,28 LPA,8/10,9/10,9/10,10 Lakhs,9
+IIT Kharagpur,CSE,JEE Advanced,SC,AI,980,4,28 LPA,8/10,9/10,9/10,10 Lakhs,9
+IIT Kharagpur,ECE,JEE Advanced,General,AI,890,4,22 LPA,8/10,9/10,8/10,10 Lakhs,8
+IIT Kharagpur,Mechanical,JEE Advanced,General,AI,2100,4,15 LPA,8/10,9/10,7/10,10 Lakhs,7
+IIT Kharagpur,Civil,JEE Advanced,General,AI,3200,4,12 LPA,8/10,9/10,6/10,10 Lakhs,7
+IIT Kanpur,CSE,JEE Advanced,General,AI,250,5,30 LPA,8/10,9/10,10/10,10 Lakhs,10
+IIT Kanpur,CSE,JEE Advanced,OBC-NCL,AI,420,5,30 LPA,8/10,9/10,10/10,10 Lakhs,10
+IIT Kanpur,CSE,JEE Advanced,SC,AI,780,5,30 LPA,8/10,9/10,10/10,10 Lakhs,10
+IIT Kanpur,ECE,JEE Advanced,General,AI,760,5,24 LPA,8/10,9/10,9/10,10 Lakhs,9
+IIT Kanpur,Electrical,JEE Advanced,General,AI,1100,5,20 LPA,8/10,9/10,8/10,10 Lakhs,8
+IIT Roorkee,CSE,JEE Advanced,General,AI,480,6,26 LPA,8/10,9/10,9/10,9 Lakhs,9
+IIT Roorkee,CSE,JEE Advanced,OBC-NCL,AI,720,6,26 LPA,8/10,9/10,9/10,9 Lakhs,9
+IIT Roorkee,CSE,JEE Advanced,SC,AI,1200,6,26 LPA,8/10,9/10,9/10,9 Lakhs,9
+IIT Roorkee,ECE,JEE Advanced,General,AI,1100,6,20 LPA,8/10,9/10,8/10,9 Lakhs,8
+IIT Roorkee,Mechanical,JEE Advanced,General,AI,2600,6,14 LPA,8/10,9/10,7/10,9 Lakhs,7
+IIT Roorkee,Civil,JEE Advanced,General,AI,3800,6,11 LPA,8/10,9/10,6/10,9 Lakhs,6
+IIT Guwahati,CSE,JEE Advanced,General,AI,870,7,22 LPA,7/10,8/10,8/10,9 Lakhs,8
+IIT Guwahati,CSE,JEE Advanced,OBC-NCL,AI,1400,7,22 LPA,7/10,8/10,8/10,9 Lakhs,8
+IIT Guwahati,CSE,JEE Advanced,SC,AI,2100,7,22 LPA,7/10,8/10,8/10,9 Lakhs,8
+IIT Guwahati,ECE,JEE Advanced,General,AI,1900,7,18 LPA,7/10,8/10,7/10,9 Lakhs,8
+IIT Guwahati,Mechanical,JEE Advanced,General,AI,3800,7,13 LPA,7/10,8/10,6/10,9 Lakhs,7
+IIT Hyderabad,CSE,JEE Advanced,General,AI,1100,8,24 LPA,8/10,8/10,9/10,8 Lakhs,9
+IIT Hyderabad,CSE,JEE Advanced,OBC-NCL,AI,1850,8,24 LPA,8/10,8/10,9/10,8 Lakhs,9
+IIT Hyderabad,ECE,JEE Advanced,General,AI,2300,8,18 LPA,8/10,8/10,8/10,8 Lakhs,8
+IIT BHU,CSE,JEE Advanced,General,AI,1650,10,20 LPA,7/10,8/10,8/10,8 Lakhs,8
+IIT BHU,CSE,JEE Advanced,OBC-NCL,AI,2600,10,20 LPA,7/10,8/10,8/10,8 Lakhs,8
+IIT BHU,ECE,JEE Advanced,General,AI,3100,10,16 LPA,7/10,8/10,7/10,8 Lakhs,7
+IIT BHU,Mechanical,JEE Advanced,General,AI,5200,10,12 LPA,7/10,8/10,6/10,8 Lakhs,6
+IIT Jodhpur,CSE,JEE Advanced,General,AI,3200,11,18 LPA,6/10,7/10,7/10,8 Lakhs,7
+IIT Jodhpur,ECE,JEE Advanced,General,AI,5500,11,14 LPA,6/10,7/10,7/10,8 Lakhs,7
+IIT Indore,CSE,JEE Advanced,General,AI,2800,13,18 LPA,7/10,7/10,8/10,8 Lakhs,8
+IIT Indore,ECE,JEE Advanced,General,AI,4800,13,14 LPA,7/10,7/10,7/10,8 Lakhs,7
+IIT Patna,CSE,JEE Advanced,General,AI,4200,14,16 LPA,6/10,7/10,7/10,7 Lakhs,7
+IIT Patna,ECE,JEE Advanced,General,AI,6800,14,12 LPA,6/10,7/10,6/10,7 Lakhs,6
+IIT Mandi,CSE,JEE Advanced,General,AI,5500,16,15 LPA,6/10,7/10,7/10,7 Lakhs,7
+IIT Tirupati,CSE,JEE Advanced,General,AI,6200,17,14 LPA,5/10,6/10,6/10,7 Lakhs,6
+IIT Palakkad,CSE,JEE Advanced,General,AI,7000,18,13 LPA,5/10,6/10,6/10,7 Lakhs,6
+NIT Trichy,CSE,JEE Main,General,AI,3200,9,22 LPA,8/10,9/10,9/10,8 Lakhs,9
+NIT Trichy,CSE,JEE Main,OBC-NCL,AI,5400,9,22 LPA,8/10,9/10,9/10,8 Lakhs,9
+NIT Trichy,CSE,JEE Main,SC,AI,9800,9,22 LPA,8/10,9/10,9/10,8 Lakhs,9
+NIT Trichy,CSE,JEE Main,EWS,AI,4200,9,22 LPA,8/10,9/10,9/10,8 Lakhs,9
+NIT Trichy,ECE,JEE Main,General,AI,6500,9,18 LPA,8/10,9/10,8/10,8 Lakhs,8
+NIT Trichy,ECE,JEE Main,OBC-NCL,AI,10200,9,18 LPA,8/10,9/10,8/10,8 Lakhs,8
+NIT Trichy,Mechanical,JEE Main,General,AI,12800,9,14 LPA,8/10,9/10,7/10,8 Lakhs,7
+NIT Trichy,CSE,JEE Main,General,Home State,2800,9,22 LPA,8/10,9/10,9/10,8 Lakhs,9
+NIT Trichy,ECE,JEE Main,General,Home State,5800,9,18 LPA,8/10,9/10,8/10,8 Lakhs,8
+NIT Warangal,CSE,JEE Main,General,AI,3800,12,20 LPA,8/10,9/10,9/10,7 Lakhs,9
+NIT Warangal,CSE,JEE Main,OBC-NCL,AI,6200,12,20 LPA,8/10,9/10,9/10,7 Lakhs,9
+NIT Warangal,CSE,JEE Main,SC,AI,11000,12,20 LPA,8/10,9/10,9/10,7 Lakhs,9
+NIT Warangal,ECE,JEE Main,General,AI,7800,12,16 LPA,8/10,9/10,8/10,7 Lakhs,8
+NIT Warangal,Mechanical,JEE Main,General,AI,14500,12,12 LPA,8/10,9/10,7/10,7 Lakhs,7
+NIT Warangal,CSE,JEE Main,General,Home State,3200,12,20 LPA,8/10,9/10,9/10,7 Lakhs,9
+NIT Surathkal,CSE,JEE Main,General,AI,4500,15,18 LPA,7/10,8/10,8/10,7 Lakhs,8
+NIT Surathkal,CSE,JEE Main,OBC-NCL,AI,7500,15,18 LPA,7/10,8/10,8/10,7 Lakhs,8
+NIT Surathkal,CSE,JEE Main,SC,AI,12500,15,18 LPA,7/10,8/10,8/10,7 Lakhs,8
+NIT Surathkal,ECE,JEE Main,General,AI,9200,15,14 LPA,7/10,8/10,7/10,7 Lakhs,7
+NIT Surathkal,Mechanical,JEE Main,General,AI,16500,15,11 LPA,7/10,8/10,6/10,7 Lakhs,6
+NIT Calicut,CSE,JEE Main,General,AI,5200,19,17 LPA,7/10,8/10,8/10,7 Lakhs,8
+NIT Calicut,CSE,JEE Main,OBC-NCL,AI,8600,19,17 LPA,7/10,8/10,8/10,7 Lakhs,8
+NIT Calicut,ECE,JEE Main,General,AI,10500,19,14 LPA,7/10,8/10,7/10,7 Lakhs,7
+NIT Calicut,Mechanical,JEE Main,General,AI,18200,19,11 LPA,7/10,8/10,6/10,7 Lakhs,6
+NIT Rourkela,CSE,JEE Main,General,AI,5800,22,17 LPA,7/10,8/10,8/10,7 Lakhs,8
+NIT Rourkela,CSE,JEE Main,OBC-NCL,AI,9500,22,17 LPA,7/10,8/10,8/10,7 Lakhs,8
+NIT Rourkela,ECE,JEE Main,General,AI,11500,22,13 LPA,7/10,8/10,7/10,7 Lakhs,7
+NIT Rourkela,Mechanical,JEE Main,General,AI,20000,22,10 LPA,7/10,8/10,6/10,7 Lakhs,6
+NIT Allahabad,CSE,JEE Main,General,AI,6500,25,16 LPA,7/10,7/10,7/10,6 Lakhs,7
+NIT Allahabad,CSE,JEE Main,OBC-NCL,AI,10800,25,16 LPA,7/10,7/10,7/10,6 Lakhs,7
+NIT Allahabad,ECE,JEE Main,General,AI,13500,25,12 LPA,7/10,7/10,6/10,6 Lakhs,7
+NIT Kurukshetra,CSE,JEE Main,General,AI,7200,30,15 LPA,6/10,7/10,7/10,6 Lakhs,7
+NIT Kurukshetra,CSE,JEE Main,OBC-NCL,AI,12000,30,15 LPA,6/10,7/10,7/10,6 Lakhs,7
+NIT Kurukshetra,ECE,JEE Main,General,AI,15000,30,11 LPA,6/10,7/10,6/10,6 Lakhs,6
+NIT Jaipur,CSE,JEE Main,General,AI,7800,32,14 LPA,6/10,7/10,7/10,6 Lakhs,7
+NIT Jaipur,CSE,JEE Main,OBC-NCL,AI,13000,32,14 LPA,6/10,7/10,7/10,6 Lakhs,7
+NIT Jaipur,ECE,JEE Main,General,AI,16500,32,11 LPA,6/10,7/10,6/10,6 Lakhs,6
+NIT Nagpur,CSE,JEE Main,General,AI,8500,35,14 LPA,6/10,7/10,7/10,6 Lakhs,7
+NIT Nagpur,CSE,JEE Main,OBC-NCL,AI,14200,35,14 LPA,6/10,7/10,7/10,6 Lakhs,7
+NIT Nagpur,ECE,JEE Main,General,AI,18000,35,11 LPA,6/10,7/10,6/10,6 Lakhs,6
+NIT Surat,CSE,JEE Main,General,AI,9200,38,13 LPA,6/10,7/10,6/10,5 Lakhs,6
+NIT Surat,CSE,JEE Main,OBC-NCL,AI,15500,38,13 LPA,6/10,7/10,6/10,5 Lakhs,6
+NIT Agartala,CSE,JEE Main,General,AI,14500,45,11 LPA,5/10,6/10,5/10,5 Lakhs,6
+NIT Agartala,CSE,JEE Main,OBC-NCL,AI,22000,45,11 LPA,5/10,6/10,5/10,5 Lakhs,6
+NIT Patna,CSE,JEE Main,General,AI,11500,42,12 LPA,6/10,6/10,6/10,5 Lakhs,6
+NIT Patna,CSE,JEE Main,OBC-NCL,AI,18500,42,12 LPA,6/10,6/10,6/10,5 Lakhs,6
+IIIT Hyderabad,CSE,JEE Main,General,AI,1200,55,30 LPA,8/10,8/10,10/10,14 Lakhs,10
+IIIT Hyderabad,CSE,JEE Main,OBC-NCL,AI,2100,55,30 LPA,8/10,8/10,10/10,14 Lakhs,10
+IIIT Hyderabad,ECE,JEE Main,General,AI,2800,55,24 LPA,8/10,8/10,9/10,14 Lakhs,9
+IIIT Delhi,CSE,JEE Main,General,AI,2500,50,26 LPA,7/10,7/10,10/10,12 Lakhs,9
+IIIT Delhi,CSE,JEE Main,OBC-NCL,AI,4200,50,26 LPA,7/10,7/10,10/10,12 Lakhs,9
+IIIT Delhi,ECE,JEE Main,General,AI,5500,50,20 LPA,7/10,7/10,9/10,12 Lakhs,8
+IIIT Allahabad,CSE,JEE Main,General,AI,4800,52,20 LPA,7/10,7/10,8/10,10 Lakhs,8
+IIIT Allahabad,CSE,JEE Main,OBC-NCL,AI,8000,52,20 LPA,7/10,7/10,8/10,10 Lakhs,8
+IIIT Allahabad,ECE,JEE Main,General,AI,9500,52,16 LPA,7/10,7/10,7/10,10 Lakhs,7
+IIIT Gwalior,CSE,JEE Main,General,AI,6500,58,16 LPA,6/10,7/10,7/10,8 Lakhs,7
+IIIT Gwalior,CSE,JEE Main,OBC-NCL,AI,11000,58,16 LPA,6/10,7/10,7/10,8 Lakhs,7
+IIIT Kota,CSE,JEE Main,General,AI,9500,62,14 LPA,6/10,6/10,7/10,7 Lakhs,7
+IIIT Kota,CSE,JEE Main,OBC-NCL,AI,16000,62,14 LPA,6/10,6/10,7/10,7 Lakhs,7
+DTU,CSE,JEE Main,General,Home State,10500,29,16 LPA,7/10,8/10,9/10,9 Lakhs,8
+DTU,CSE,JEE Main,OBC-NCL,Home State,16500,29,16 LPA,7/10,8/10,9/10,9 Lakhs,8
+DTU,CSE,JEE Main,SC,Home State,25000,29,16 LPA,7/10,8/10,9/10,9 Lakhs,8
+DTU,ECE,JEE Main,General,Home State,18000,29,14 LPA,7/10,8/10,8/10,9 Lakhs,8
+DTU,Mechanical,JEE Main,General,Home State,28000,29,11 LPA,7/10,8/10,6/10,9 Lakhs,6
+NSUT,CSE,JEE Main,General,Home State,12500,60,15 LPA,7/10,8/10,8/10,9 Lakhs,8
+NSUT,CSE,JEE Main,OBC-NCL,Home State,20000,60,15 LPA,7/10,8/10,8/10,9 Lakhs,8
+NSUT,ECE,JEE Main,General,Home State,22000,60,12 LPA,7/10,8/10,7/10,9 Lakhs,7
+COEP Pune,CSE,JEE Main,General,Home State,13500,65,14 LPA,6/10,7/10,7/10,7 Lakhs,7
+COEP Pune,CSE,JEE Main,OBC-NCL,Home State,22000,65,14 LPA,6/10,7/10,7/10,7 Lakhs,7
+COEP Pune,ECE,JEE Main,General,Home State,25000,65,12 LPA,6/10,7/10,7/10,7 Lakhs,7
+VJTI Mumbai,CSE,JEE Main,General,Home State,15000,68,13 LPA,6/10,7/10,7/10,8 Lakhs,7
+VJTI Mumbai,CSE,JEE Main,OBC-NCL,Home State,24000,68,13 LPA,6/10,7/10,7/10,8 Lakhs,7
+BITS Pilani,CSE,BITSAT,General,AI,3500,20,28 LPA,9/10,9/10,9/10,25 Lakhs,9
+BITS Pilani,ECE,BITSAT,General,AI,6500,20,22 LPA,9/10,9/10,8/10,25 Lakhs,8
+BITS Pilani,Mechanical,BITSAT,General,AI,12000,20,15 LPA,9/10,9/10,7/10,25 Lakhs,7
+BITS Goa,CSE,BITSAT,General,AI,5500,40,22 LPA,8/10,8/10,8/10,22 Lakhs,8
+BITS Goa,ECE,BITSAT,General,AI,9500,40,18 LPA,8/10,8/10,7/10,22 Lakhs,7
+BITS Hyderabad,CSE,BITSAT,General,AI,7000,45,20 LPA,7/10,8/10,8/10,20 Lakhs,8
+BITS Hyderabad,ECE,BITSAT,General,AI,12000,45,15 LPA,7/10,8/10,7/10,20 Lakhs,7
+Thapar University,CSE,JEE Main,General,AI,18000,70,15 LPA,7/10,7/10,8/10,16 Lakhs,7
+Thapar University,CSE,JEE Main,OBC-NCL,AI,28000,70,15 LPA,7/10,7/10,8/10,16 Lakhs,7
+Thapar University,ECE,JEE Main,General,AI,28000,70,12 LPA,7/10,7/10,7/10,16 Lakhs,7
+Manipal Institute,CSE,JEE Main,General,AI,25000,75,14 LPA,7/10,8/10,7/10,18 Lakhs,7
+Manipal Institute,ECE,JEE Main,General,AI,40000,75,11 LPA,7/10,8/10,6/10,18 Lakhs,6

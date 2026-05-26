@@ -13,15 +13,26 @@ datasource db {
 }
 
 model College {
-  id              Int    @id @default(autoincrement())
-  name            String
-  branch          String
-  closingRank     Int
-  nirf            Int
-  package         String
-  hostel          String
-  campus          String
-  codingCulture   String
-  fees            String
-  placementScore  Int
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  nirf      Int
+  hostel    String
+  campus    String
+  fees      String
+
+  branches  Branch[]
+}
+
+model Branch {
+  id               Int      @id @default(autoincrement())
+  name             String
+  category         String
+  quota            String
+  closingRank      Int
+  averagePackage   String
+  codingCulture    String
+  placementScore   Int
+
+  collegeId        Int
+  college          College  @relation(fields: [collegeId], references: [id])
 }

@@ -9,6 +9,8 @@ import ScrollReveal from "../../components/ScrollReveal";
 function ResultsContent() {
   const searchParams = useSearchParams();
   const userRank = Number(searchParams.get("rank"));
+  const category = searchParams.get("category");
+  const quota = searchParams.get("quota");
   const [search, setSearch] = useState("");
   const [sortBy, setSortBy] = useState("nirf");
   const [colleges, setColleges] = useState<any[]>([]);
@@ -22,7 +24,7 @@ function ResultsContent() {
       try {
         setLoading(true);
         const response = await fetch(
-          `https://unifixed.onrender.com/predict?rank=${userRank}`
+          `https://unifixed.onrender.com/predict?rank=${userRank}&category=${category}&quota=${quota}`
         );
 
         const data = await response.json();

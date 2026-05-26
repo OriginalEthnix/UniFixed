@@ -1,0 +1,8 @@
+college,branch,category,quota,closingRank,nirf,package,hostel,campus,codingCulture,fees,placementScore
+IIT Bombay,CSE,General,AI,67,3,36 LPA,9/10,10/10,10/10,12 Lakhs,10
+IIT Delhi,CSE,General,AI,115,2,34 LPA,9/10,10/10,10/10,12 Lakhs,10
+NIT Trichy,CSE,OBC,Other State,4800,9,18 LPA,8/10,9/10,9/10,8 Lakhs,9
+DTU,CSE,General,Home State,10500,29,16 LPA,7/10,8/10,9/10,9 Lakhs,8
+NSUT,CSE,General,Home State,12500,60,15 LPA,7/10,8/10,8/10,9 Lakhs,8
+IIIT Hyderabad,CSE,General,AI,1200,55,30 LPA,8/10,8/10,10/10,14 Lakhs,10
+BITS Pilani,CSE,General,AI,3500,20,28 LPA,9/10,9/10,9/10,25 Lakhs,9

@@ -7,6 +7,9 @@ export default function RankForm() {
   const [rank, setRank] = useState("");
   const [exam, setExam] = useState("JEE Main");
 
+  const [category, setCategory] = useState("General");
+  const [quota, setQuota] = useState("AI");
+
   const router = useRouter();
 
   const handlePredict = () => {
@@ -16,7 +19,9 @@ export default function RankForm() {
     }
 
     router.push(
-      `/results?rank=${rank}&exam=${encodeURIComponent(exam)}`
+      `/results?rank=${rank}&exam=${encodeURIComponent(
+        exam
+      )}&category=${category}&quota=${quota}`
     );
   };
 
@@ -64,6 +69,29 @@ export default function RankForm() {
           <option>JEE Advanced</option>
           <option>NEET</option>
           <option>VITEEE</option>
+        </select>
+        <select
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+          className="input-glass"
+          style={{ marginBottom: "1rem" }}
+        >
+          <option value="General">General</option>
+          <option value="OBC">OBC</option>
+          <option value="SC">SC</option>
+          <option value="ST">ST</option>
+          <option value="EWS">EWS</option>
+        </select>
+
+        <select
+          value={quota}
+          onChange={(e) => setQuota(e.target.value)}
+          className="input-glass"
+          style={{ marginBottom: "1.5rem" }}
+        >
+          <option value="AI">All India</option>
+          <option value="Home State">Home State</option>
+          <option value="Other State">Other State</option>
         </select>
 
         <button
